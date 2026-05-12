@@ -1,5 +1,6 @@
 import getAllBooksData from "@/actions/getBooksData";
 import Banner from "@/components/shared/Banner";
+import MarqueeSection from "@/components/shared/Marquee";
 import Image from "next/image";
 
 export default async function Home() {
@@ -7,14 +8,9 @@ export default async function Home() {
 
   return (
     <>
+     <MarqueeSection books={data}/>
     <Banner/>
-    <div >
-      {data.map(d=>{
-        return(
-          <p key={d.id}>{d.title}</p>
-        )
-      })}
-    </div>
+   
     </>
     
   );
