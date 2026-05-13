@@ -5,7 +5,7 @@ import Image from 'next/image';
 const Navbar = () => {
     return (
         <div>
-            <div className="navbar bg-gray-50 shadow-sm px-4 md:px-10">
+            <div className="navbar bg-green-50 shadow-sm px-4 md:px-10">
   <div className="navbar-start">
     <Link
      href={'/'}>

@@ -40,7 +40,7 @@ const Footer = () => {
                 </div>
             </nav>
 </div>
-            <div className='w-full border-t border-gray-200 pt-8 mx-auto mt-8'>
+            <div className='w-full border-t border-gray-200 pt-5 md:pt-8 mx-auto mt-5 md:mt-8'>
                 <aside className='flex  justify-center items-center text-center  gap-2'>
 
 

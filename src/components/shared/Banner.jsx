@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Banner = () => {
     return (
-        <div className='hero min-h-130 overflow-hidden relative ' style={{ backgroundImage:
+        <div className='hero min-h-90 md:min-h-120 overflow-hidden relative ' style={{ backgroundImage:
                 `url(${bannerImg.src})`,
                 backgroundSize:'cover',
                 backgroundPosition:'center'
