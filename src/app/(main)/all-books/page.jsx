@@ -10,8 +10,14 @@ const allBooks=await getAllBooksData();
 
 const params = await searchParams;
 const query=params?.query ||"";
+const category=params?.category || "All"
 const searchTerm=query.toLowerCase();
-const filteredBooks=allBooks.filter((book)=>book.title.toLowerCase().includes(searchTerm));
+
+const filteredBooks=allBooks.filter((book)=>{
+    const matchesSearch =book.title.toLowerCase().includes(searchTerm);
+    const matchesCategory=category==="All" || book.category===category;
+    return matchesCategory && matchesSearch
+});
 
     return (
         <div className='max-w-7xl mx-auto px-4 py-10 '>
@@ -21,7 +27,22 @@ const filteredBooks=allBooks.filter((book)=>book.title.toLowerCase().includes(se
                 <p className='text-gray-500 mb-8'>Find your next favorite book from our collection</p>
                 <Suspense fallback={<div className='h-14 w-full max-w-2xl bg-gray-100 animation-pulse rounded-full mx-auto'/>}><SearchBar/></Suspense>
             </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
+            <div className='flex flex-col md:flex-row gap-8 items-start'>
+     <aside className='w-full md:w-64 shrink-0'>
+        <div className='bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm sticky top-24'>
+<h3 className='font-bold text-lg mb-4 text-emerald-900 border-b pb-2 text-left'>Categories</h3>
+<div className='flex flex-col gap-3'>
+    {["All","Story",'Tech',"Science"].map((cat)=>(
+<Link  key={cat} href={`?category=${cat}${query ? `&query=${query}`:''}`} className={`px-4 py-2 rounded-lg  text-sm font-medium text-left ${
+    category===cat?'bg-emerald-600 text-white shadow-md':'hover:bg-emerald-50 text-gray-600'
+}`}>{cat}</Link>
+    ))}
+</div>
+        </div>
+     </aside>
+
+            
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8'>
                 {filteredBooks.length>0?(
                     filteredBooks.map((book)=>(
                         <div key={book.id} className='card bg-base-100 shadow-md border border-emerald-50 hover:shadow-sm'>
@@ -55,7 +76,9 @@ const filteredBooks=allBooks.filter((book)=>book.title.toLowerCase().includes(se
                         </div>
                     </div>
                 )}
+                 </div>
             </div>
+           
         </div>
     );
 };
