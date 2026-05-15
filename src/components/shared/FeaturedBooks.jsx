@@ -24,7 +24,7 @@ const FeaturedBooks = ({books}) => {
             {book.description}
         </p>
         <div className='card-actions mt-auto'>
-            <Link href={`/all-books/${book.id}` } className='w-full'>
+            <Link href={`/book-details/${book.id}` } className='w-full'>
             <button className='btn btn-success btn-block text-white'>View Details</button>
             </Link>
         </div>

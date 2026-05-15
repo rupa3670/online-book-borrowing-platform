@@ -13,7 +13,7 @@ const res = await fetch("https://online-book-borrowing-platform-six.vercel.app/b
 
   const data= await res.json()
   const foundBookData= data.find((bookData)=>
-bookData.id === id);
+bookData.id.toString() === id.toString());
   return foundBookData;
 
 };
