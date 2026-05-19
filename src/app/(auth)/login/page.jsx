@@ -2,7 +2,7 @@
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaGoogle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -10,26 +10,49 @@ import { toast } from 'react-toastify';
 const LogInPage = () => {
     const router= useRouter();
 
+    const[isLoading, setIsLoading]=useState(false);
+
     const{  register,
     handleSubmit,formState:{errors}}= useForm()
 
-    const handleLoginFunc=async(data)=>{
-        const { data:res, error } = await authClient.signIn.email({
-    email: data.email, // required
-    password: data.password, // required
-    rememberMe: true,
-    callbackURL: "/",
-},{
-    onSuccess:()=>{
+ const handleLoginFunc =async (data) =>{
+    setIsLoading(true);
+    try{
+
+        const{data:res,error}=await authClient.signIn.email({
+            email:data.email,
+            password:data.password,
+            callbackURL:"/",
+        });
+
+        console.log("Res:",res);
+        console.log("error",error);
+        if(error){
+            // setIsLoading(false);
+            // if(error.code==="INVALID_EMAIL_OR_PASSWORD")
+            // {
+ toast.error(error.message || "Invalid email or password");
+            // }
+            // else{
+            //     toast.error(error.message || "Something went wrong")
+            // }
+            // console.log(error);
+           
+            return;
+        }
+        
+        setIsLoading(false);
         toast.success("Welcome back!");
-        router.push("/")
+        router.push("/");
         router.refresh();
-    },
-    onError:(err)=>{
-        toast.error(err.error.message ||"Invalid email or password");
     }
-});
-};
+        catch(err){
+            setIsLoading(false);
+            console.log(err);
+            toast.error("Something went wrong");
+        }
+    
+ }
 
 
 const handleGoogleLogin = async()=>{

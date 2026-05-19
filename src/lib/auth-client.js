@@ -1,8 +1,7 @@
 import { createAuthClient } from "better-auth/react"
+
 export const authClient = createAuthClient({
-    /** The base URL of the server (optional if you're using the same domain) */
-    baseURL: "http://localhost:3000"
+    baseURL: process.env.NEXT_PUBLIC_APP_URL || "https://online-book-borrowing-platform-six.vercel.app"
 })
 
-
-export const { signIn, signUp, useSession } = createAuthClient()
+export const { signIn, signUp, useSession } = authClient

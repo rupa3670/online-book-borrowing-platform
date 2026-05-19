@@ -39,11 +39,11 @@ const filteredBooks=allBooks.filter((book)=>{
 }`}>{cat}</Link>
     ))}
 </div>
-        </div>
+ </div>
      </aside>
 
             
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8'>
                 {filteredBooks.length>0?(
                     filteredBooks.map((book)=>(
                         <div key={book.id} className='card bg-base-100 shadow-md border border-emerald-50 hover:shadow-sm'>
