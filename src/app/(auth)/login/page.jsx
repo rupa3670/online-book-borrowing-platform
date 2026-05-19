@@ -33,10 +33,11 @@ const LogInPage = () => {
 
 
 const handleGoogleLogin = async()=>{
-    await authClient.signIn.social({
+   const data= await authClient.signIn.social({
         provider:"google",
-        callbackURL:"/"
+        // callbackURL:"/"
     });
+    console.log(data)
 }
 
     

@@ -21,9 +21,9 @@ const FeaturedBooks = ({books}) => {
         <h2 className='card-title text-emerald-800 text-lg leading-tight'>
             {book.title}
         </h2>
-        <p className='text-sm text-gray-500 line-clamp-2 my-2'>
+        {/* <p className='text-sm text-gray-500 line-clamp-2 my-2'>
             {book.description}
-        </p>
+        </p> */}
         <div className='card-actions mt-auto'>
             {/* <Link href={`/book-details/${book.id}` } className='w-full'>
             <button className='btn btn-success btn-block text-white'>View Details</button>

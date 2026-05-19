@@ -2,12 +2,17 @@
 import { authClient } from '@/lib/auth-client';
 import { createEmailVerificationToken } from 'better-auth/api';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FaGoogle } from 'react-icons/fa';
 
 const RegistrationPage = () => {
+const router=useRouter();
+const [isLoading,setIsLoading]
+=useState(false);
     const{  register,
-        handleSubmit,formState:{errors}}= useForm()
+        handleSubmit,formState:{errors}}= useForm();
         const handleRegisterFunc=async(data)=>{
             console.log(data,"data");
       const {email,name,photo,password} =data;  
@@ -19,16 +24,26 @@ const RegistrationPage = () => {
     email: email, // required
     password: password, // required
     image: photo,
-    callbackURL: "/",
+
             });
             console.log(res,error)
             if(error){
-                alert(error.massage)
+                alert(error.message)
             }
             if(res){
+                await authClient.signOut();
                 alert("signup successful")
+                router.push("/login")
             }
         };
+
+       const handleGoogleLogin = async()=>{
+           const data= await authClient.signIn.social({
+                provider:"google",
+                 callbackURL:"/login"
+            });
+            console.log(data)
+        } 
         
     return (
          <div className='container mx-auto min-h-[80vh] flex justify-center items-center bg-slate-100'>
@@ -74,6 +89,13 @@ const RegistrationPage = () => {
 
 <button className="btn w-full bg-slate-800 text-white">Register</button>
 </form>
+<div
+className='divider my-6 text-gray-400 text-xs uppercase'>
+OR
+</div>
+<button  onClick={handleGoogleLogin} className='btn btn-outline w-full border-slate-300 mb-3 '>
+   <FaGoogle className='text-2xl'/> Continue with Google
+</button>
 
             </div>
         </div>

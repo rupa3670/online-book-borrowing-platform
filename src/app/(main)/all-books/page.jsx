@@ -55,7 +55,7 @@ const filteredBooks=allBooks.filter((book)=>{
 </figure>
 <div className='card-body p-5'>
     <h2 className='card-title text-emerald-800 text-lg line-clamp-1'>{book.title}</h2>
-    <p className='text-sm text-gray-500 mb-2 '>Category:{book.category}</p>
+    {/* <p className='text-sm text-gray-500 mb-2 '>Category:{book.category}</p> */}
     <div className='card-actions mt-auto'>
         {/* <Link href={`/book-details/${book.id}`} className="w-full">
         <button className='btn btn-accent btn-block text-white hover:bg-emerald-700'>

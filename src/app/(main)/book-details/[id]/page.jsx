@@ -53,29 +53,29 @@ const BookDetailsPage = async({params}) => {
 <p className='text-lg text-gray-500 mb-5 leading-relaxed'>{book.description}</p>
 
 <div className='mb-8'>
-    <p className='text-sm font-bold text-gray-700 mb-3'>Quantity</p>
+    <p className='text-sm font-bold text-gray-700 mb-3'>Available Quantity</p>
     <div className='flex items-center gap-4 border w-fit px-4 py-2 rounded-xl bg-white shadow-sm'>
 
         {/* <button className='p-1 hover:text-emerald-500'><FaMinus/></button> */}
-        <span className='font-bold text-lg px-2'>5 Copies left</span>
+        <span className='font-bold text-lg px-2'>{book.available_quantity} Copies</span>
         {/* <button className='p-1 hover:text-emerald-500'><FaPlus/></button> */}
 
     </div>
     </div>
 
     
-<div className='relative w-full max-w-2xl'>
+{/* <div className='relative w-full max-w-2xl'>
     <h2 className='mb-3 font-bold text-emerald-800 text-xl'>Review</h2>
     <textarea placeholder="Share your opinion" className="textarea textarea-success"></textarea>
     <button className='absolute bottom-4 right-30 p-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 ' title='Post Review'>
 <FaAngleDoubleRight/>
     </button>
-</div>
+</div> */}
 
  <div className='flex flex-wrap gap-4 mt-3'> 
-     <button className='btn btn-outline btn-accent  border-2'>
+     {/* <button className='btn btn-outline btn-accent  border-2'>
       Add to Wishlist  
-    </button> 
+    </button>  */}
     <div className='flex-1'><PurchaseButton bookTitle={book.title}/></div>
  </div>  
 
