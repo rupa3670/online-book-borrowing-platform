@@ -49,16 +49,16 @@ const BookDetailsPage = async({params}) => {
     </div>
     
 <h1 className='text-4xl font-bold text-emerald-900 mb-4'>{book.title}</h1>
-<p className='text-3xl font-bold text-emerald-900 mb-2'>$20.00</p>
+<p className='text-2xl font-bold text-emerald-400 mb-2'>{book.author}</p>
 <p className='text-lg text-gray-500 mb-5 leading-relaxed'>{book.description}</p>
 
 <div className='mb-8'>
     <p className='text-sm font-bold text-gray-700 mb-3'>Quantity</p>
     <div className='flex items-center gap-4 border w-fit px-4 py-2 rounded-xl bg-white shadow-sm'>
 
-        <button className='p-1 hover:text-emerald-500'><FaMinus/></button>
-        <span className='font-bold text-lg px-2'>1</span>
-        <button className='p-1 hover:text-emerald-500'><FaPlus/></button>
+        {/* <button className='p-1 hover:text-emerald-500'><FaMinus/></button> */}
+        <span className='font-bold text-lg px-2'>5 Copies left</span>
+        {/* <button className='p-1 hover:text-emerald-500'><FaPlus/></button> */}
 
     </div>
     </div>

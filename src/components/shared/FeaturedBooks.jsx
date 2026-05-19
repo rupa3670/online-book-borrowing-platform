@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import DetailsButton from '../all-books/DetailsButton';
 
 
 const FeaturedBooks = ({books}) => {
@@ -11,7 +12,7 @@ const FeaturedBooks = ({books}) => {
             </div>
             <div className='flex justify-between items-end mb-10 '>
               
-<div className='grid grid-cols-1 sm:grid-cols lg:grid-cols-4 gap-8'>
+<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
 {featured?.map((book)=>(
     <div key={book.id} className='card bg-base-100 shadow-md hover:shadow-2xl border border-gray-100 transition-all duration-300'>
        <figure className='relative overflow-x-hidden'> <img src={book.image_url} alt={'book image'} className='h-78 w-full object-cover' ></img></figure>
@@ -24,9 +25,10 @@ const FeaturedBooks = ({books}) => {
             {book.description}
         </p>
         <div className='card-actions mt-auto'>
-            <Link href={`/book-details/${book.id}` } className='w-full'>
+            {/* <Link href={`/book-details/${book.id}` } className='w-full'>
             <button className='btn btn-success btn-block text-white'>View Details</button>
-            </Link>
+            </Link> */}
+            <DetailsButton bookId={book.id}/>
         </div>
        </div>
     </div>

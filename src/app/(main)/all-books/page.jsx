@@ -1,5 +1,6 @@
 
 import getAllBooksData from '@/actions/getBooksData';
+import DetailsButton from '@/components/all-books/DetailsButton';
 import SearchBar from '@/components/all-books/SearchBar';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
@@ -56,9 +57,10 @@ const filteredBooks=allBooks.filter((book)=>{
     <h2 className='card-title text-emerald-800 text-lg line-clamp-1'>{book.title}</h2>
     <p className='text-sm text-gray-500 mb-2 '>Category:{book.category}</p>
     <div className='card-actions mt-auto'>
-        <Link href={`/book-details/${book.id}`} className="w-full">
+        {/* <Link href={`/book-details/${book.id}`} className="w-full">
         <button className='btn btn-accent btn-block text-white hover:bg-emerald-700'>
-          Details  </button></Link>
+          Details  </button></Link> */}
+          <DetailsButton bookId={book.id}/>
     </div>
 </div>
                         </div>

@@ -1,10 +1,13 @@
 "use client"
 import React from 'react';
+
 import { IoStar } from "react-icons/io5";
 import {  Mousewheel, Pagination,Navigation } from 'swiper/modules';
 import { Swiper,SwiperSlide } from 'swiper/react';
-import 'swiper/css'
-import 'swiper/css/pagination'
+import 'swiper/css';
+// import 'swiper/css/navigation';
+
+import 'swiper/css/pagination';
 const Review = () => {
     const userReviews=[
        { id: 1, name: "Tanvir Hasan", role: "Avid Reader", comment: "The collection is amazing! I found many rare tech books here.", rating: 5 },
@@ -37,7 +40,7 @@ const Review = () => {
         >
  {userReviews.map((rev)=>(
       <SwiperSlide key={rev.id}>
- <div  className='bg-white p-4 rounded-2xl shadow-sm  border-emerald-100 hover:shadow-lg'>
+ <div  className='bg-white p-4 rounded-2xl shadow-sm  border-emerald-100 hover:shadow-lg '>
      <div className='flex gap-1 mb-4'>{[...Array(5)].map((_,i)=>(
                         <span key={i}className={i<rev.rating?"text-yellow-400":"text-gray-300"}><IoStar/></span> ))}
                         </div>

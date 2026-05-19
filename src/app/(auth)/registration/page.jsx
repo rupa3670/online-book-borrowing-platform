@@ -21,8 +21,14 @@ const RegistrationPage = () => {
     image: photo,
     callbackURL: "/",
             });
-            console.log(res)
-        }
+            console.log(res,error)
+            if(error){
+                alert(error.massage)
+            }
+            if(res){
+                alert("signup successful")
+            }
+        };
         
     return (
          <div className='container mx-auto min-h-[80vh] flex justify-center items-center bg-slate-100'>
