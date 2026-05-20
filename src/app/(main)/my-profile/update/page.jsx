@@ -1,6 +1,6 @@
 'use client'
 import { authClient } from '@/lib/auth-client';
-import { router, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -90,8 +90,8 @@ if(isPending){
             <label className='label font-semibold text-sm text-slate-600'>Photo URL</label>
             <input type="url"
             value={image}
-            onChange={(e)=>setName(e.target.value)}
-            placeholder = "https://example.com/photo.jpg" className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'/>
+            onChange={(e)=>setImage(e.target.value)}
+            placeholder = "Enter your photo url" className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'/>
             
      </div>       
   <button 

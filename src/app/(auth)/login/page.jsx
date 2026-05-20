@@ -28,10 +28,10 @@ const LogInPage = () => {
         console.log("Res:",res);
         console.log("error",error);
         if(error){
-            // setIsLoading(false);
+             setIsLoading(false);
             // if(error.code==="INVALID_EMAIL_OR_PASSWORD")
             // {
- toast.error(error.message || "Invalid email or password");
+         toast.error(error.message || "Invalid email or password");
             // }
             // else{
             //     toast.error(error.message || "Something went wrong")

@@ -31,16 +31,16 @@ const [isLoading,setIsLoading]
                 alert(error.message)
             }
             if(res){
-                await authClient.signOut();
+                await authClient();
                 alert("signup successful")
-                router.push("/login")
+                // router.push("/login")
             }
         };
 
        const handleGoogleLogin = async()=>{
            const data= await authClient.signIn.social({
                 provider:"google",
-                 callbackURL:"/login"
+                 callbackURL:"/"
             });
             console.log(data)
         } 

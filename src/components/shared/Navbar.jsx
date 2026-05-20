@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '@/assets/logo.png'
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,11 +8,17 @@ import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 const Navbar = () => {
-  const{data:session}=authClient.useSession();
+  const{data:session,isPending,error}=authClient.useSession();
   console.log(session)
   const user= session?.user;
   console.log(user)
   const router = useRouter();
+useEffect(()=>{
+  if(session){
+    console.log(session);
+  }
+},[session]);
+
   const handleLogout= async ()=>{
     await authClient.signOut({
       fetchOptions:{
