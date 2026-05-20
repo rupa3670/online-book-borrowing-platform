@@ -31,9 +31,9 @@ const [isLoading,setIsLoading]
                 alert(error.message)
             }
             if(res){
-                await authClient();
+                await authClient.signOut();
                 alert("signup successful")
-                // router.push("/login")
+                 router.push("/login")
             }
         };
 
