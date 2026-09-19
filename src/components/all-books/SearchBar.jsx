@@ -1,47 +1,36 @@
-"use client"
-import { usePathname, useSearchParams,useRouter } from "next/navigation";
-
+"use client";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
 const SearchBar = () => {
-    const searchParams=useSearchParams();
-    const pathname=usePathname();
-    const router=useRouter();
-    //const{replace}=useRouter();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
 
-    const handleSearch=(term)=>{
-        const params=new URLSearchParams(searchParams);
-        if(term){
-            params.set("query",term);
-
-        }
-        else{
+    const handleSearch = (term) => {
+        const params = new URLSearchParams(searchParams);
+        if (term) {
+            params.set("query", term);
+        } else {
             params.delete("query");
         }
         router.replace(`${pathname}?${params.toString()}`);
-    }
+    };
+
     return (
-       <div className="flex justify-center">
-         <label className="input">
-  <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <g
-      strokeLinejoin="round"
-      strokeLinecap="round"
-      strokeWidth="2.5"
-      fill="none"
-      stroke="currentColor"
-    >
-      <circle cx="11" cy="11" r="8"></circle>
-      <path d="m21 21-4.3-4.3"></path>
-    </g>
-  </svg>
-  <input type="search" 
-  className="grow"
-  placeholder="Search by book title.." 
-  defaultValue={searchParams.get("query")?.toString()}
-  onChange={(e)=>handleSearch(e.target.value)}
-  />
-</label>
-       </div>
+        <div className="flex justify-center w-full max-w-md mx-auto">
+            {/* 🆕 UX Touch: Full-width modern rounded border integration */}
+            <div className="flex items-center w-full bg-white border border-emerald-600/30 rounded-full px-4 py-2.5 shadow-sm focus-within:border-emerald-500 focus-within:shadow-md transition-all duration-300">
+                <Search className="h-5 w-5 text-gray-400 shrink-0 mr-2" />
+                <input 
+                    type="search" 
+                    className="w-full bg-transparent text-gray-800 placeholder-gray-400 text-sm font-medium focus:outline-none"
+                    placeholder="Search by book title or keywords..." 
+                    defaultValue={searchParams.get("query")?.toString()}
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
+            </div>
+        </div>
     );
 };
 
