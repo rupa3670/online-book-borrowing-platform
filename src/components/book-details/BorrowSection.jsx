@@ -36,20 +36,31 @@ const BorrowSection = ({ bookId, max, initialLiked }) => {
   return (
     <>
       <div className='mb-8'>
-        <p className='text-sm font-bold text-emerald-600 mb-2'>Quantity</p>
+        <div className='flex items-center justify-between mb-2 max-w-[220px]'>
+          <p className='text-xs font-semibold text-gray-500 uppercase tracking-wide'>Quantity</p>
+          <p className='text-xs text-gray-400'>{max} available</p>
+        </div>
         <div className='flex items-center gap-4 border border-emerald-100 w-fit px-4 py-2 rounded-xl bg-white shadow-sm'>
           <button
             onClick={() => setQty((q) => Math.max(1, q - 1))}
             disabled={qty <= 1}
-            className='p-2 rounded-lg hover:bg-emerald-50 disabled:opacity-30'
+            aria-label='Decrease quantity'
+            className='p-2 rounded-lg hover:bg-emerald-50 disabled:opacity-30 disabled:hover:bg-transparent transition'
           >
             <FaMinus />
           </button>
-          <span className='font-bold text-lg w-8 text-center'>{qty}</span>
+          <span
+            className='font-bold text-lg w-8 text-center text-gray-800'
+            aria-live='polite'
+            aria-label={`Quantity: ${qty}`}
+          >
+            {qty}
+          </span>
           <button
             onClick={() => setQty((q) => Math.min(max, q + 1))}
             disabled={qty >= max}
-            className='p-2 rounded-lg hover:bg-emerald-50 disabled:opacity-30'
+            aria-label='Increase quantity'
+            className='p-2 rounded-lg hover:bg-emerald-50 disabled:opacity-30 disabled:hover:bg-transparent transition'
           >
             <FaPlus />
           </button>
@@ -57,10 +68,12 @@ const BorrowSection = ({ bookId, max, initialLiked }) => {
       </div>
 
       <div className='flex flex-wrap items-center gap-4'>
+        {/* 10% accent — unified with Edit Profile / other primary CTAs */}
         <button
           onClick={handleBorrow}
-          disabled={isPending}
-          className='btn bg-amber-500 hover:bg-amber-600 text-white border-none px-8 shadow-lg'
+          disabled={isPending || sessionLoading}
+          aria-busy={isPending}
+          className='btn bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white border-none px-8 shadow-sm transition disabled:opacity-60'
         >
           {isPending ? 'Borrowing...' : 'Borrow This Book'}
         </button>

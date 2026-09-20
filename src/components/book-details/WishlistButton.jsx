@@ -35,11 +35,13 @@ const WishlistButton = ({ bookId, initialLiked = false }) => {
   return (
     <button
       onClick={handleClick}
-      disabled={isPending}
-      className='btn btn-outline btn-accent border-2'
+      disabled={isPending || sessionLoading}
+      aria-pressed={liked}
+      aria-busy={isPending}
+      className='btn btn-outline border-2 border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition disabled:opacity-60'
     >
       {liked ? <FaHeart className='text-red-500' /> : <FaRegHeart />}
-      {liked ? 'In Wishlist' : 'Add to Wishlist'}
+      {isPending ? 'Updating...' : liked ? 'In Wishlist' : 'Add to Wishlist'}
     </button>
   );
 };

@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { FaUserEdit } from 'react-icons/fa';
 import MyLibrary from '@/components/profile/MyLibrary';
+import BadgesList from '@/components/profile/BadgesList';
 
 const MyProfilePage = () => {
     const { data: session, isPending } = authClient.useSession();
@@ -83,6 +84,7 @@ const MyProfilePage = () => {
                                 <FaUserEdit /> Edit Profile
                             </Link>
                         </div>
+                        <BadgesList email={user?.email} />
                     </div>
                 </div>
 

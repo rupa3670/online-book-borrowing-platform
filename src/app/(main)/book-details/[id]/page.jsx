@@ -17,23 +17,25 @@ const BookDetailsPage = async ({ params }) => {
     const inWishlist = await isBookInWishlist(id);
 
     return (
-        <div className='bg-gradient-to-br from-emerald-50 via-white to-amber-50 min-h-screen'>
+        // 60% — dominant neutral background (matches My Profile)
+        <div className='bg-white min-h-screen'>
             <div className='max-w-6xl mx-auto px-4 py-12'>
                 <Link
                     href='/all-books'
-                    className='inline-flex items-center gap-2 mb-8 text-emerald-700 hover:text-emerald-900 font-medium transition'
+                    className='inline-flex items-center gap-2 mb-8 text-emerald-700 hover:text-emerald-800 font-medium transition'
                 >
                     <FaArrowLeft /> Back to Library
                 </Link>
 
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 md:p-12 rounded-3xl shadow-2xl border border-emerald-100'>
-                    {/* Image: full book visible */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 md:p-12 rounded-3xl shadow-sm border border-emerald-100'>
+                    {/* Image */}
                     <div className='flex justify-center items-start'>
-                        <div className='w-full max-w-[380px] p-4 rounded-2xl bg-gradient-to-br from-emerald-100 to-amber-100 shadow-lg'>
+                        {/* 30% — soft emerald tint container, replaces heavy gradient */}
+                        <div className='w-full max-w-[380px] p-4 rounded-2xl bg-emerald-50 border border-emerald-100'>
                             <img
                                 src={book.image_url}
-                                alt={book.title}
-                                className='w-full h-auto max-h-[520px] object-contain rounded-xl shadow-md hover:scale-105 transition duration-500'
+                                alt={`Cover of ${book.title} by ${book.author}`}
+                                className='w-full h-auto max-h-[520px] object-contain rounded-xl shadow-sm hover:scale-105 transition duration-500'
                             />
                         </div>
                     </div>
@@ -42,36 +44,38 @@ const BookDetailsPage = async ({ params }) => {
                     <div className='flex flex-col'>
                         {/* Badges */}
                         <div className='flex flex-wrap items-center gap-3 mb-4'>
-                            <span className='px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 font-semibold text-sm'>
+                            <span className='px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-sm border border-emerald-100'>
                                 {book.category}
                             </span>
                             <span
+                                role='status'
                                 className={`px-4 py-1.5 rounded-full font-semibold text-sm ${inStock
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-red-100 text-red-600'
+                                        ? 'bg-green-50 text-green-700 border border-green-100'
+                                        : 'bg-red-50 text-red-700 border border-red-100'
                                     }`}
                             >
                                 {inStock ? 'In Stock' : 'Out of Stock'}
                             </span>
                         </div>
 
-                        <h1 className='text-4xl md:text-5xl font-extrabold text-emerald-900 mb-3'>
+                        {/* Clear text hierarchy: h1 → subheading → body */}
+                        <h1 className='text-3xl md:text-4xl font-bold text-gray-900 mb-2 leading-tight'>
                             {book.title}
                         </h1>
-                        <p className='text-xl font-semibold text-emerald-600 mb-4'>
+                        <p className='text-lg font-medium text-emerald-700 mb-4'>
                             by {book.author}
                         </p>
-                        <p className='text-lg text-gray-500 mb-6 leading-relaxed'>
+                        <p className='text-base text-gray-600 mb-6 leading-relaxed'>
                             {book.description}
                         </p>
 
                         {/* Available copies */}
                         <div className='mb-6'>
-                            <p className='text-sm font-bold text-emerald-600 mb-1'>
+                            <p className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1'>
                                 Available Copies
                             </p>
-                            <p className='text-gray-700 font-semibold'>
-                                {book.available_quantity} Copies
+                            <p className='text-gray-800 font-semibold'>
+                                {book.available_quantity} {book.available_quantity === 1 ? 'copy' : 'copies'}
                             </p>
                         </div>
 
@@ -84,7 +88,17 @@ const BookDetailsPage = async ({ params }) => {
                             />
                         ) : (
                             <div className='flex flex-wrap items-center gap-4'>
-                                <button className='btn btn-disabled'>Not Available</button>
+                                <div>
+                                    <button
+                                        className='btn btn-disabled'
+                                        aria-disabled='true'
+                                    >
+                                        Not Available
+                                    </button>
+                                    <p className='text-xs text-gray-400 mt-1'>
+                                        All copies are currently borrowed. Add to wishlist to get notified.
+                                    </p>
+                                </div>
                                 <WishlistButton bookId={id} initialLiked={inWishlist} />
                             </div>
                         )}
