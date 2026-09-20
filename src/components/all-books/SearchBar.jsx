@@ -19,7 +19,7 @@ const SearchBar = () => {
 
     return (
         <div className="flex justify-center w-full max-w-md mx-auto">
-            {/* 🆕 UX Touch: Full-width modern rounded border integration */}
+           
             <div className="flex items-center w-full bg-white border border-emerald-600/30 rounded-full px-4 py-2.5 shadow-sm focus-within:border-emerald-500 focus-within:shadow-md transition-all duration-300">
                 <Search className="h-5 w-5 text-gray-400 shrink-0 mr-2" />
                 <input 

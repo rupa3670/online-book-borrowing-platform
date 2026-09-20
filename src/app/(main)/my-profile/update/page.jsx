@@ -6,109 +6,134 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const UpdateProfilePage = () => {
-const{data:session,isPending}=authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
 
-const router=useRouter();
-const[name,setName]=useState(session?.user?.name || "");
+  const router = useRouter();
+  const [name, setName] = useState(session?.user?.name || "");
+  const [image, setImage] = useState(session?.user?.image || "");
+  const [imageError, setImageError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-const[image,setImage]=useState(session?.user?.image || "");
-const [isSubmitting, setIsSubmitting]=useState(false);
-
-useEffect(()=>{
-    if(!isPending){
-        if(!session){
-            toast.error("Please log in to access this page");
-
-            router.push("/login");
-        }
-    else{
+  useEffect(() => {
+    if (!isPending) {
+      if (!session) {
+        toast.error("Please log in to access this page");
+        router.push("/login");
+      } else {
         setName(session.user.name || "");
-
         setImage(session.user.image || "");
-    }    
+      }
     }
-},[session,router,isPending]);
+  }, [session, router, isPending]);
 
-const handleUpdate=async (e)=>{
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if(!name.trim() || !image.trim()){
-        toast.error("Both Name and Image URL are required");
-        return;
+    if (!name.trim() || !image.trim()) {
+      toast.error("Both Name and Image URL are required");
+      return;
     }
-  setIsSubmitting(true);
-try{
-    const{data,error}=await authClient.updateUser({
-        name:name,
-        image:image,
-    });
-    if(error){
+    setIsSubmitting(true);
+    try {
+      const { data, error } = await authClient.updateUser({
+        name: name,
+        image: image,
+      });
+      if (error) {
         toast.error(error.message || "Failed to update profile");
         return;
+      }
+      toast.success("Profile updated successfully!");
     }
-    toast.success("Profile updated successfully!");
-}  
-catch(err){
-    toast.error("Something went wrong. Please try again.");
-}
-finally{
-    setIsSubmitting(false);
-}
-};
+    catch (err) {
+      toast.error("Something went wrong. Please try again.");
+    }
+    finally {
+      setIsSubmitting(false);
+    }
+  };
 
-if(isPending){
-    return(
-        <div className='min-h-[70vh] flex flex-col justify-center items-center gap-2'>
-            <span className='loading loading-spinner loading-lg items-center text-emerald-600'></span>
-            <p className='text-xs text-gray-400 font-medium'>Loading session...</p>
-        </div>
-    )
-}
- 
+  if (isPending) {
     return (
-        <div className='max-w-md mx-auto px-4 py-16 min-h[80vh] flex flex-col justify-center'>
-<div className='mb-4'>
-    <Link href={'/my-profile'}>
-    <button className='btn btn-outline text-emerald-900 text-sm font-medium'>Back to Profile</button>
-    </Link>
-    </div> 
-    <div className='bg-white p-8 rounded-3xl shadow-xl border border-slate-100'>
-    <h2 className='text-2xl font-bold text-slate-800 mb-1 text-center'>Update Profile</h2> 
-    <p className='text-sm text-gray-500 text-center mb-6'>Change Your Display Name And Photo URL</p>  
-    <form  onSubmit={handleUpdate} className='space-y-5'>
-        <div className='form-control w-full'>
-            <label className='label font-semibold text-sm text-slate-600'>Name</label>
-            <input type="text"
-            value={name}
-            onChange={(e)=>setName(e.target.value)}
-            placeholder = "Enter your name" className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'   />
-            
-            
-        </div>
+      <div className='min-h-[70vh] flex flex-col justify-center items-center gap-2'>
+        <span className='loading loading-spinner loading-lg items-center text-emerald-600'></span>
+        <p className='text-xs text-gray-400 font-medium'>Loading session...</p>
+      </div>
+    )
+  }
 
-         <div className='form-control w-full'>
+  return (
+    <div className='max-w-md mx-auto px-4 py-16 min-h[80vh] flex flex-col justify-center'>
+      <div className='mb-4'>
+        <Link href={'/my-profile'}>
+          <button className='btn btn-outline text-emerald-900 text-sm font-medium'>Back to Profile</button>
+        </Link>
+      </div>
+      <div className='bg-white p-8 rounded-3xl shadow-xl border border-slate-100'>
+        <h2 className='text-2xl font-bold text-slate-800 mb-1 text-center'>Update Profile</h2>
+        <p className='text-sm text-gray-500 text-center mb-6'>Change Your Display Name And Photo URL</p>
+        <form onSubmit={handleUpdate} className='space-y-5'>
+          <div className='form-control w-full'>
+            <label className='label font-semibold text-sm text-slate-600'>Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'
+            />
+          </div>
+
+          <div className='form-control w-full'>
             <label className='label font-semibold text-sm text-slate-600'>Photo URL</label>
-            <input type="url"
-            value={image}
-            onChange={(e)=>setImage(e.target.value)}
-            placeholder = "Enter your photo url" className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'/>
-            
-     </div>       
-  <button 
-  type='submit'
-  disabled={isSubmitting}
-  className='btn btn-success font-bold mt-4'
-  >
-{isSubmitting ?(
-    <span className='loading loading-spinner loading-sm'></span>
-) :(
-    "Update Information"
-)}
-    </button>      
- </form> 
-        </div>           
-        </div>
-    );
+            <input
+              type="url"
+              value={image}
+              onChange={(e) => {
+                setImage(e.target.value);
+                setImageError(false);
+              }}
+              placeholder="Enter your photo url"
+              className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'
+            />
+
+            {image && (
+              <div className='mt-3 flex items-center gap-3'>
+                {!imageError ? (
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className='w-16 h-16 rounded-full object-cover border border-slate-200'
+                    onError={() => setImageError(true)}
+                    onLoad={() => setImageError(false)}
+                  />
+                ) : (
+                  <div className='w-16 h-16 rounded-full border border-red-200 bg-red-50 flex items-center justify-center'>
+                    <span className='text-red-400 text-xs'>✕</span>
+                  </div>
+                )}
+                <p className={`text-xs ${imageError ? 'text-red-500' : 'text-gray-400'}`}>
+                  {imageError ? "Couldn't load this image URL" : 'Preview'}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <button
+            type='submit'
+            disabled={isSubmitting}
+            className='btn btn-success font-bold mt-4'
+          >
+            {isSubmitting ? (
+              <span className='loading loading-spinner loading-sm'></span>
+            ) : (
+              "Update Information"
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default UpdateProfilePage;

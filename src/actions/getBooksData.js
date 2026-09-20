@@ -1,22 +1,25 @@
-"use server"
+"use server";
+import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
-export const getAllBooksData = async() => {
-const res = await fetch("https://online-book-borrowing-platform-six.vercel.app/books.json");
-
-  const data= await res.json()
-  return data;
-
+const getCollection = async () => {
+  const client = await clientPromise;
+  return client.db('online_book_library').collection('bookdb');
 };
 
-export const getBookData = async(id) => {
-const res = await fetch("https://online-book-borrowing-platform-six.vercel.app/books.json");
-
-  const data= await res.json()
-  const foundBookData= data.find((bookData)=>
-bookData.id.toString() === id.toString());
-  return foundBookData;
-
+export const getAllBooksData = async () => {
+  const col = await getCollection();
+  const books = await col.find({}).toArray();
+  
+  return books.map((b) => ({ ...b, _id: b._id.toString() }));
 };
 
+export const getBookData = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const col = await getCollection();
+  const book = await col.findOne({ _id: new ObjectId(id) });
+  if (!book) return null;
+  return { ...book, _id: book._id.toString() };
+};
 
 export default getAllBooksData;

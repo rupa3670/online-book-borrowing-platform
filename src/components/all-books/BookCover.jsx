@@ -8,7 +8,10 @@ const BookCover = ({ src, alt }) => {
             src={src}
             alt={alt}
             loading="lazy"
-            onError={(e) => { e.currentTarget.src = '/placeholder-book-cover.png'; }}
+            onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/placeholder-book-cover.png';
+            }}
             className="w-full h-full object-cover object-top"
         />
     );

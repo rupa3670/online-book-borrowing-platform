@@ -33,7 +33,7 @@ const BookGrid = ({ books }) => {
                 {paginatedBooks.length > 0 ? (
                     paginatedBooks.map((book) => (
                         <div
-                            key={book.id}
+                            key={book._id}
                             className='card card-side bg-white border border-emerald-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden h-48'
                         >
                             {/* Cover */}
@@ -76,7 +76,7 @@ const BookGrid = ({ books }) => {
                                 <p className='text-xs text-gray-500 line-clamp-1'>by {book.author}</p>
 
                                 <div className='card-actions mt-auto'>
-                                    <DetailsButton bookId={book.id} />
+                                    <DetailsButton bookId={book._id} />
                                 </div>
                             </div>
                         </div>

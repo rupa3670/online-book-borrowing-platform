@@ -6,6 +6,7 @@ import MarqueeSection from "@/components/shared/Marquee";
 import Review from "@/components/shared/Review";
 
 import Image from "next/image";
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const data= await getAllBooksData()

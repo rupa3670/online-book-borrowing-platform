@@ -4,7 +4,8 @@ import BookGrid from '@/components/all-books/BookGrid';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
 
-export const AllBookPage = async ({ searchParams }) => {
+export const dynamic = 'force-dynamic';
+ const AllBookPage = async ({ searchParams }) => {
     const allBooks = await getAllBooksData();
 
     const params = await searchParams;

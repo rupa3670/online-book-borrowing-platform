@@ -1,15 +1,27 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { borrowBook } from '@/actions/borrowBook';
+import { authClient } from '@/lib/auth-client';
 import WishlistButton from './WishlistButton';
 
-const BorrowSection = ({ bookId, max }) => {
+const BorrowSection = ({ bookId, max, initialLiked }) => {
   const [qty, setQty] = useState(1);
   const [isPending, startTransition] = useTransition();
+  const { data: session, isPending: sessionLoading } = authClient.useSession();
+  const router = useRouter();
 
   const handleBorrow = () => {
+    if (sessionLoading) return;
+
+    if (!session) {
+      toast.warn('Please log in to borrow this book!');
+      router.push('/login');
+      return;
+    }
+
     startTransition(async () => {
       const res = await borrowBook(bookId, qty);
       if (res.success) {
@@ -52,7 +64,7 @@ const BorrowSection = ({ bookId, max }) => {
         >
           {isPending ? 'Borrowing...' : 'Borrow This Book'}
         </button>
-        <WishlistButton />
+        <WishlistButton bookId={bookId} initialLiked={initialLiked} />
       </div>
     </>
   );
