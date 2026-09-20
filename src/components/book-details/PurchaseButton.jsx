@@ -19,7 +19,7 @@ const PurchaseButton = ({bookTitle}) => {
         toast.success(` successfully borrowing!`)
     };
     return (
-        <button onClick={handlePurchase} className='btn btn-outline btn-accent  border-2 '>
+        <button onClick={handlePurchase} className='btn bg-emerald-500 hover:bg-emerald-600 text-white border-none px-8 shadow-lg'>
 Borrow This Book
         </button>
     );

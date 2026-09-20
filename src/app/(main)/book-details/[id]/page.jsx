@@ -1,89 +1,94 @@
 import { getBookData } from '@/actions/getBooksData';
 import PurchaseButton from '@/components/book-details/PurchaseButton';
+import QuantitySelector from '@/components/book-details/QuantitySelector';
+import WishlistButton from '@/components/book-details/WishlistButton';
 import Link from 'next/link';
-import React from 'react';
-import { FaAngleDoubleRight, FaArrowLeft, FaMinus, FaPaperPlane, FaPlus } from 'react-icons/fa';
+import { notFound } from 'next/navigation';
+import { FaArrowLeft } from 'react-icons/fa';
 
-const BookDetailsPage = async({params}) => {
-    const{id}=await params;
+const BookDetailsPage = async ({ params }) => {
+  const { id } = await params;
+  const book = await getBookData(id);
 
-    const book =await getBookData(id);
-    if(!book){
-        return<div className='text-center py-20 text-2xl'>Book is not found!</div>
-    }
-    return (
-        <div className='max-w-6xl mx-auto px-4 py-12'>
-            {/* <Link href={'/all-books'} className='btn btn-ghost mb-8 text-emerald-700'><FaArrowLeft/> Back to Library</Link> */}
+  if (!book) notFound();
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-6 md:p-12 rounded-3xl shadow-xl border border-emerald-50'>
+  const inStock = book.available_quantity > 0;
 
-             <div className='flex  items-center md:items-start'>
-                 <div className='w-full max-w-[320px] lg:max-w-[380px]'>
-                <img src={book.image_url} alt={book.title} className='w-full  aspect-[3/4] object-cover rounded-2xl shadow-xl' />
+  return (
+    <div className='bg-gradient-to-br from-emerald-50 via-white to-amber-50 min-h-screen'>
+      <div className='max-w-6xl mx-auto px-4 py-12'>
+        <Link
+          href='/all-books'
+          className='inline-flex items-center gap-2 mb-8 text-emerald-700 hover:text-emerald-900 font-medium transition'
+        >
+          <FaArrowLeft /> Back to Library
+        </Link>
+
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 md:p-12 rounded-3xl shadow-2xl border border-emerald-100'>
+          {/* Image: full book visible */}
+          <div className='flex justify-center items-start'>
+            <div className='w-full max-w-[380px] p-4 rounded-2xl bg-gradient-to-br from-emerald-100 to-amber-100 shadow-lg'>
+              <img
+                src={book.image_url}
+                alt={book.title}
+                className='w-full h-auto max-h-[520px] object-contain rounded-xl shadow-md hover:scale-105 transition duration-500'
+              />
             </div>
-    {/* <div className='w-full  max-w-[380px] border-t pt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center'>
-    <div >
-        <p className='text-gray-400 text-sm'>Rating</p>
-        <p className='font-bold text-emerald-800'>4.8</p>
-    </div>
-     <div >
-        <p className='text-gray-400 text-sm'>Language</p>
-        <p className='font-bold text-emerald-800'>English</p>
-    </div>
-     <div >
-        <p className='text-gray-400 text-sm'>Available</p>
-        <p className='font-bold   text-emerald-800'>Yes</p>
-    </div>
-     <div >
-        <p className='text-gray-400 text-sm'>ID</p>
-        <p className='font-bold text-emerald-800'>{book.id}</p>
-    </div>
+          </div>
 
-</div>         */}
-             </div>
-             
- <div className='w-full  flex flex-col'>
-<div className=' mb-4 '>
+          {/* Details */}
+          <div className='flex flex-col'>
+            <div className='flex flex-wrap items-center gap-3 mb-4'>
+              <span className='px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 font-semibold text-sm'>
+                {book.category}
+              </span>
+              <span
+                className={`px-4 py-1.5 rounded-full font-semibold text-sm ${
+                  inStock
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-red-100 text-red-600'
+                }`}
+              >
+                {inStock ? 'In Stock' : 'Out of Stock'}
+              </span>
+            </div>
 
-  <span className='badge badge-accent px-4 py-3 font-semibold'>  {book.category}</span>
-    </div>
-    
-<h1 className='text-4xl font-bold text-emerald-900 mb-4'>{book.title}</h1>
-<p className='text-2xl font-bold text-emerald-400 mb-2'>{book.author}</p>
-<p className='text-lg text-gray-500 mb-5 leading-relaxed'>{book.description}</p>
+            <h1 className='text-4xl md:text-5xl font-extrabold text-emerald-900 mb-3'>
+              {book.title}
+            </h1>
+            <p className='text-xl font-semibold text-emerald-600 mb-4'>
+              by {book.author}
+            </p>
+            <p className='text-lg text-gray-500 mb-6 leading-relaxed'>
+              {book.description}
+            </p>
 
-<div className='mb-4'>
-    <p className='text-sm font-bold text-emerald-500 mb-4'>Available Quantity</p>
-    <div className='flex items-center gap-4 border w-fit px-4 py-2 rounded-xl bg-white shadow-sm'>
+            <div className='mb-6'>
+              <p className='text-sm font-bold text-emerald-600 mb-1'>Available Copies</p>
+              <p className='text-gray-700 font-semibold'>{book.available_quantity} Copies</p>
+            </div>
 
-        {/* <button className='p-1 hover:text-emerald-500'><FaMinus/></button> */}
-        <span className='font-bold text-lg px-2 text-gray-500'>{book.available_quantity} Copies</span>
-        {/* <button className='p-1 hover:text-emerald-500'><FaPlus/></button> */}
+            {inStock && (
+              <div className='mb-8'>
+                <p className='text-sm font-bold text-emerald-600 mb-2'>Quantity</p>
+                <QuantitySelector max={book.available_quantity} />
+              </div>
+            )}
 
-    </div>
-    </div>
-
-    
-{/* <div className='relative w-full max-w-2xl'>
-    <h2 className='mb-3 font-bold text-emerald-800 text-xl'>Review</h2>
-    <textarea placeholder="Share your opinion" className="textarea textarea-success"></textarea>
-    <button className='absolute bottom-4 right-30 p-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 ' title='Post Review'>
-<FaAngleDoubleRight/>
-    </button>
-</div> */}
-
- <div className='flex flex-wrap gap-4 mt-3'> 
-     {/* <button className='btn btn-outline btn-accent  border-2'>
-      Add to Wishlist  
-    </button>  */}
-    <div className='flex-1'><PurchaseButton bookTitle={book.title}/></div>
- </div>  
-
-
- </div> 
-            </div>       
+            {/* Buttons close together */}
+            <div className='flex flex-wrap items-center gap-4'>
+              {inStock ? (
+                <PurchaseButton bookTitle={book.title} />
+              ) : (
+                <button className='btn btn-disabled'>Not Available</button>
+              )}
+              <WishlistButton />
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default BookDetailsPage;
