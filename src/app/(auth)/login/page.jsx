@@ -4,100 +4,132 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaGoogle } from 'react-icons/fa';
+import {
+    FaGoogle,
+    FaEye,
+    FaEyeSlash,
+    FaBookOpen,
+    FaGift,
+    FaHandHoldingHeart,
+    FaFireAlt,
+    FaSmileBeam,
+} from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { recordLoginAndGetStatus } from '@/actions/userActivity';
 
 const LogInPage = () => {
-    const router= useRouter();
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
-    const[isLoading, setIsLoading]=useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const{  register,
-    handleSubmit,formState:{errors}}= useForm()
-
- const handleLoginFunc =async (data) =>{
+    const handleLoginFunc = async (data) => {
     setIsLoading(true);
-    try{
-
-        const{data:res,error}=await authClient.signIn.email({
-            email:data.email,
-            password:data.password,
-            callbackURL:"/",
+    try {
+        const { data: res, error } = await authClient.signIn.email({
+            email: data.email,
+            password: data.password,
+            callbackURL: "/",
         });
 
-        console.log("Res:",res);
-        console.log("error",error);
-        if(error){
-             setIsLoading(false);
-            // if(error.code==="INVALID_EMAIL_OR_PASSWORD")
-            // {
-         toast.error(error.message || "Invalid email or password");
-            // }
-            // else{
-            //     toast.error(error.message || "Something went wrong")
-            // }
-            // console.log(error);
-           
+        if (error) {
+            setIsLoading(false);
+            toast.error(error.message || "Invalid email or password");
             return;
         }
-        
+
         setIsLoading(false);
-        toast.success("Welcome back!");
         router.push("/");
         router.refresh();
     }
-        catch(err){
-            setIsLoading(false);
-            console.log(err);
-            toast.error("Something went wrong");
-        }
-    
- }
-
-
-const handleGoogleLogin = async()=>{
-   const data= await authClient.signIn.social({
-        provider:"google",
-        // callbackURL:"/"
-    });
-    console.log(data)
+    catch (err) {
+        setIsLoading(false);
+        toast.error("Something went wrong");
+    }
 }
 
-    
+    const handleGoogleLogin = async () => {
+    try {
+        await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/"
+        });
+    } catch (err) {
+        toast.error("Google sign-in failed");
+    }
+}
     return (
-        <div className='container mx-auto min-h-[80vh] flex justify-center items-center bg-slate-100'>
-            <div className='p-4 rounded-xl bg-white'>
-<h2 className='font-bold text-2xl mb-4'>Login your account</h2>
-<form  className='space-y-4' onSubmit={handleSubmit(handleLoginFunc)}><fieldset className="fieldset">
-  <legend className="fieldset-legend">Email</legend>
-  <input type="email" className="input" 
-  name='email'
-  placeholder="Type here email"
-  {...register("email",{required:"email field is required"})} />
- 
- {errors.email &&<p className='text-red-500'>{errors.email.message}</p>}
-</fieldset>
+        <div className='min-h-[85vh] flex justify-center items-center bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-12'>
+            <div className='w-full max-w-md'>
+                <div className='bg-white p-8 rounded-3xl shadow-xl border border-emerald-100'>
 
-<fieldset className="fieldset">
-  <legend className="fieldset-legend">Password</legend>
-  <input type="password" className="input"
-  name='password' 
-  placeholder="Type here password"
-   {...register("password",{required:"password field is required"})} />
-   {errors.password &&<p className='text-red-500'>{errors.password.message}</p>}
+                    <div className='flex flex-col items-center mb-6'>
+                        <div className='w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center text-white text-2xl mb-3 shadow-lg'>
+                            <FaBookOpen />
+                        </div>
+                        <h2 className='font-bold text-2xl text-emerald-900'>Welcome back</h2>
+                        <p className='text-sm text-gray-500 mt-1'>Log in to continue your reading journey</p>
+                    </div>
 
-</fieldset>
-<button className="btn w-full bg-slate-800 text-white">Login</button>
-</form>
-<div
-className='divider my-6 text-gray-400 text-xs uppercase'>
-OR
-</div>
-<button  onClick={handleGoogleLogin} className='btn btn-outline w-full border-slate-300 mb-3 '>
-   <FaGoogle className='text-2xl'/> Continue with Google
-</button>
-<p>
-    Do not have an account? <Link href={'/registration'} className='text-blue-500'>Register</Link></p>
+                    <form className='space-y-4' onSubmit={handleSubmit(handleLoginFunc)}>
+                        <div className='form-control w-full'>
+                            <label className='label font-semibold text-sm text-slate-600'>Email</label>
+                            <input
+                                type="email"
+                                className='input input-bordered w-full focus:outline-emerald-600 border-slate-200'
+                                placeholder="you@example.com"
+                                {...register("email", { required: "Email field is required" })}
+                            />
+                            {errors.email && <p className='text-red-500 text-xs mt-1'>{errors.email.message}</p>}
+                        </div>
+
+                        <div className='form-control w-full'>
+                            <label className='label font-semibold text-sm text-slate-600'>Password</label>
+                            <div className='relative'>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className='input input-bordered w-full focus:outline-emerald-600 border-slate-200 pr-10'
+                                    placeholder="Enter your password"
+                                    {...register("password", { required: "Password field is required" })}
+                                />
+                                <button
+                                    type='button'
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                    className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-emerald-600'
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                            {errors.password && <p className='text-red-500 text-xs mt-1'>{errors.password.message}</p>}
+                        </div>
+
+                        <button
+                            type='submit'
+                            disabled={isLoading}
+                            className='btn w-full bg-emerald-700 hover:bg-emerald-800 text-white border-none'
+                        >
+                            {isLoading ? <span className='loading loading-spinner loading-sm'></span> : "Login"}
+                        </button>
+                    </form>
+
+                    <div className='divider my-6 text-gray-400 text-xs uppercase'>OR</div>
+
+                    <button
+                        onClick={handleGoogleLogin}
+                        className='btn btn-outline w-full border-slate-300 gap-2 hover:bg-emerald-50 hover:border-emerald-300'
+                    >
+                        <FaGoogle className='text-lg text-emerald-700' /> Continue with Google
+                    </button>
+
+                    <p className='text-center text-sm text-gray-500 mt-6'>
+                        Do not have an account?{' '}
+                        <Link href={'/registration'} className='text-emerald-700 font-semibold hover:underline'>
+                            Register
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );

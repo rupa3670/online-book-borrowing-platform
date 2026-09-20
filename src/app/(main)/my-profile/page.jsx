@@ -39,16 +39,16 @@ const MyProfilePage = () => {
         : null;
 
     return (
-        <div className='bg-gradient-to-br from-emerald-50 via-white to-amber-50 min-h-screen'>
+        <div className='bg-gray-50 min-h-screen'>
             <div className='max-w-4xl mx-auto px-4 py-12'>
                 {/* Profile card */}
-                <div className='bg-white rounded-3xl shadow-xl border border-emerald-100 overflow-hidden'>
-                    <div className='h-28 bg-gradient-to-r from-emerald-600 to-teal-500'></div>
+                <div className='bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden'>
+                    <div className='h-24 bg-gray-100'></div>
 
                     <div className='px-6 md:px-10 pb-8'>
                         <div className='flex flex-col md:flex-row md:items-end gap-4 -mt-14'>
                             <div className='avatar'>
-                                <div className='w-28 rounded-full ring ring-white ring-offset-2 ring-offset-emerald-100'>
+                                <div className='w-28 rounded-full ring-4 ring-white'>
                                     <img
                                         src={user?.image || defaultAvatar}
                                         alt={user?.name || "User Avatar"}
@@ -62,10 +62,10 @@ const MyProfilePage = () => {
                             </div>
 
                             <div className='flex-1 text-center md:text-left'>
-                                <h1 className='text-2xl md:text-3xl font-extrabold text-emerald-900'>
+                                <h1 className='text-2xl md:text-3xl font-bold text-gray-800'>
                                     {user?.name}
                                 </h1>
-                                <p className='text-emerald-600 font-medium break-all'>{user?.email}</p>
+                                <p className='text-gray-500 font-medium break-all'>{user?.email}</p>
                                 {memberSince && (
                                     <p className='text-xs text-gray-400 mt-1'>Member since {memberSince}</p>
                                 )}
@@ -73,7 +73,7 @@ const MyProfilePage = () => {
 
                             <Link
                                 href={'/my-profile/update'}
-                                className='btn bg-amber-500 hover:bg-amber-600 text-white border-none gap-2 self-center md:self-auto'
+                                className='btn bg-emerald-600 hover:bg-emerald-700 text-white border-none gap-2 self-center md:self-auto'
                             >
                                 <FaUserEdit /> Edit Profile
                             </Link>
@@ -81,7 +81,7 @@ const MyProfilePage = () => {
                     </div>
                 </div>
 
-                {/* Borrowed books + Wishlist */}
+               
                 <MyLibrary />
             </div>
         </div>
